@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bulk URL Scanner - Phishing Detector</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #1e1e1e;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+        h1 { text-align: center; color: #3498db; }
+        textarea {
+            width: 100%;
+            height: 120px;
+            padding: 12px;
+            border: 1px solid #444;
+            border-radius: 6px;
+            background: #2b2b2b;
+            color: #fff;
+            font-size: 16px;
+            margin-top: 15px;
+            resize: vertical;
+        }
+        button {
+            margin-top: 15px;
+            width: 100%;
+            padding: 12px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        button:hover { background: #2980b9; }
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+            text-align: left;
+        }
+        th, td { padding: 10px; border-bottom: 1px solid #444; }
+        th { color: #3498db; }
+        .back-link { display: block; text-align: center; margin-top: 20px; color: #3498db; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Bulk URL Scanner</h1>
+        <p style="text-align: center; color: #aaa;">Enter multiple URLs (one per line, max 10)</p>
+
+        <form method="POST">
+            <textarea name="urls" placeholder="https://example1.com&#10;https://example2.com" required></textarea>
+            <button type="submit">Scan All URLs</button>
+        </form>
+
+        {% if results %}
+        <div class="results-section" style="margin-top: 30px;">
+            <h3>Scan Results</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>URL</th>
+                        <th>Status</th>
+                        <th>Risk Score</th>
+                        <th>VT Malicious</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for res in results %}
+                    <tr>
+                        <td style="word-break: break-all;">{{ res.url }}</td>
+                        <td style="color: {{ '#2ecc71' if res.status == 'Safe' else '#e74c3c' }};">{{ res.status }}</td>
+                        <td>{{ res.risk_score }}/100</td>
+                        <td>{{ res.malicious }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+
+        <a href="/" class="back-link">← Back to Single Scanner</a>
+    </div>
+</body>
+</html>
